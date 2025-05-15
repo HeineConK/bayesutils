@@ -1,0 +1,121 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sampling Monitor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            padding: 0;
+            display: flex;
+        }
+        #content {
+            flex: 1;
+            max-width: 800px;
+        }
+        #toc {
+            position: fixed;
+            top: 50px;
+            right: 20px;
+            width: 200px;
+            border-left: 3px solid #0077cc;
+            padding-left: 10px;
+            background: #f8f9fa;
+        }
+        #toc a {
+            display: block;
+            text-decoration: none;
+            color: #0077cc;
+            padding: 5px 0;
+        }
+        #toc a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Table of Contents -->
+<div id="toc">
+    <strong>Table of Contents</strong>
+    <nav>
+        <ul id="toc-list">
+        </ul>
+    </nav>
+</div>
+
+<!-- Main Content -->
+<div id="content">
+<h2 id="section1">lp__</h2>
+<img src='sampling.plots/1_lp__.png' />
+<img src='sampling.plots/2_lp__.png' />
+<h2 id="section2">accept_stat__</h2>
+<img src='sampling.plots/1_accept_stat__.png' />
+<img src='sampling.plots/2_accept_stat__.png' />
+<h2 id="section3">stepsize__</h2>
+<img src='sampling.plots/1_stepsize__.png' />
+<img src='sampling.plots/2_stepsize__.png' />
+<h2 id="section4">treedepth__</h2>
+<img src='sampling.plots/1_treedepth__.png' />
+<img src='sampling.plots/2_treedepth__.png' />
+<h2 id="section5">n_leapfrog__</h2>
+<img src='sampling.plots/1_n_leapfrog__.png' />
+<img src='sampling.plots/2_n_leapfrog__.png' />
+<h2 id="section6">divergent__</h2>
+<img src='sampling.plots/1_divergent__.png' />
+<img src='sampling.plots/2_divergent__.png' />
+<h2 id="section7">energy__</h2>
+<img src='sampling.plots/1_energy__.png' />
+<img src='sampling.plots/2_energy__.png' />
+<h2 id="section8">B.1.1</h2>
+<img src='sampling.plots/1_B.1.1.png' />
+<img src='sampling.plots/2_B.1.1.png' />
+<h2 id="section9">B.2.1</h2>
+<img src='sampling.plots/1_B.2.1.png' />
+<img src='sampling.plots/2_B.2.1.png' />
+<h2 id="section10">B.3.1</h2>
+<img src='sampling.plots/1_B.3.1.png' />
+<img src='sampling.plots/2_B.3.1.png' />
+<h2 id="section11">B.1.2</h2>
+<img src='sampling.plots/1_B.1.2.png' />
+<img src='sampling.plots/2_B.1.2.png' />
+<h2 id="section12">B.2.2</h2>
+<img src='sampling.plots/1_B.2.2.png' />
+<img src='sampling.plots/2_B.2.2.png' />
+<h2 id="section13">B.3.2</h2>
+<img src='sampling.plots/1_B.3.2.png' />
+<img src='sampling.plots/2_B.3.2.png' />
+<h2 id="section14">a</h2>
+<img src='sampling.plots/1_a.png' />
+<img src='sampling.plots/2_a.png' />
+<h2 id="section15">sigma</h2>
+<img src='sampling.plots/1_sigma.png' />
+<img src='sampling.plots/2_sigma.png' />
+<h2 id="section16">Divergent Transition Statistics</h2>
+<img src='sampling.plots/divtrans.hist.png' >
+</div>
+
+<script>
+    // Auto-generate the Table of Contents
+    document.addEventListener("DOMContentLoaded", function () {
+        let tocList = document.getElementById("toc-list");
+        let headers = document.querySelectorAll("h2");
+        headers.forEach(header => {
+            let listItem = document.createElement("li");
+            let link = document.createElement("a");
+            link.href = "#" + header.id;
+            link.textContent = header.textContent;
+            listItem.appendChild(link);
+            tocList.appendChild(listItem);
+        });
+    });
+	
+	// Automatically reload the page every 4 seconds
+    setTimeout(function() {
+        location.reload();
+    }, 4000);
+	
+</script>
+
+</body>
+</html>

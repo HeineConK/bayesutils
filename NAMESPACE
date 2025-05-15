@@ -1,0 +1,4 @@
+exportPattern("^[[:alpha:]]+")
+export(print.stancode)
+export(stancode)
+S3method(print, stancode)

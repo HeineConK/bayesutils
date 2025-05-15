@@ -1,0 +1,26 @@
+</div>
+
+<script>
+    // Auto-generate the Table of Contents
+    document.addEventListener("DOMContentLoaded", function () {
+        let tocList = document.getElementById("toc-list");
+        let headers = document.querySelectorAll("h2");
+        headers.forEach(header => {
+            let listItem = document.createElement("li");
+            let link = document.createElement("a");
+            link.href = "#" + header.id;
+            link.textContent = header.textContent;
+            listItem.appendChild(link);
+            tocList.appendChild(listItem);
+        });
+    });
+	
+	// Automatically reload the page every 4 seconds
+    setTimeout(function() {
+        location.reload();
+    }, 4000);
+	
+</script>
+
+</body>
+</html>

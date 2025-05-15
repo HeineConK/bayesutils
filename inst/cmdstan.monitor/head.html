@@ -1,0 +1,48 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sampling Monitor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            padding: 0;
+            display: flex;
+        }
+        #content {
+            flex: 1;
+            max-width: 800px;
+        }
+        #toc {
+            position: fixed;
+            top: 50px;
+            right: 20px;
+            width: 200px;
+            border-left: 3px solid #0077cc;
+            padding-left: 10px;
+            background: #f8f9fa;
+        }
+        #toc a {
+            display: block;
+            text-decoration: none;
+            color: #0077cc;
+            padding: 5px 0;
+        }
+        #toc a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Table of Contents -->
+<div id="toc">
+    <strong>Table of Contents</strong>
+    <nav>
+        <ul id="toc-list">
+        </ul>
+    </nav>
+</div>
+
+<!-- Main Content -->
+<div id="content">
