@@ -95,7 +95,7 @@ PI.hrect.plotter <- function(p = c(0.9, 0.5), col = c(8,1), heights = c(0.06, 0.
 PI.boxed.plotter <- function(p = c(0.99, 0.9, 0.5), col = c(acol(4,0.1),
                                                             acol(4,0.6),
                                                             acol(4,1)),
-                             height = c(0.10), border = NA){
+                             height = c(0.08), border = NA){
 
   pi.plot <- function(i, args, x0, x1, y0, y1){
 
