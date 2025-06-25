@@ -171,10 +171,12 @@ mcmc.forestplot <- function(x,
   fit_obj_list <- NULL
   draws <- NULL
   draws_list <- NULL
+  stanreg_list <- NULL
 
   summaries <- NULL
 
   if(any(class(x) == "CmdStanFit")) fit_obj <- x
+  else if("stanreg" %in% class(x)) draws <- extract_samples_from_rstan( x )
   else if(class(x) == "mcmc.draws") draws <- x
   else if(class(x) == "data.frame"){
     if(ignore.lp) summaries <- list( x[rownames(x) != "lp__", ] )
@@ -183,10 +185,12 @@ mcmc.forestplot <- function(x,
   else{
     are.fitobs <- all( sapply(x, function(xi) any(class(xi) == "CmdStanFit")) )
     are.draws  <- all( sapply(x, function(xi) class(xi) == "mcmc.draws") )
+    are.stanregs <- all( sapply(x, function(xi)  "stanreg" %in% class(x) ))
     are.summaries <- all( sapply(x, function(xi) class(xi) == "data.frame") )
 
     if(are.fitobs) fit_obj_list <- x
     else if(are.draws) draws_list <- x
+    else if(are.stanregs) stanreg_list <- x
     else if(are.summaries){
       if(ignore.lp) summaries <- lapply(x, \(xi) xi[rownames(xi) != "lp__",])
       else summaries <- x
@@ -218,6 +222,16 @@ mcmc.forestplot <- function(x,
       else mdl_names <- names(draws_list)
     }
   }
+
+  if(!is.null(stanreg_list)){
+    summaries <- lapply(stanreg_list, function(stanregobj) mcmc.summary(fit_obj = fit_obj, draws = draws, vars = vars, ignore.lp = ignore.lp, PI.lvls = pi.plotter$p))
+    if(length(stanreg_list) > 1){
+      if(is.null(names( stanreg_list))) mdl_names <- paste0("M", 1:length(stanreg_list))
+      else mdl_names <- names(stanreg_list)
+    }
+  }
+
+
   if(!is.null(summaries) && is.null(mdl_names)){
     if(length(summaries) > 1){
       if(is.null(names( summaries))) mdl_names <- paste0("M", 1:length(summaries))

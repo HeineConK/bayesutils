@@ -32,7 +32,7 @@ extract_samples <- function(fit_obj, chain.subset = 0) {
 
     ess <- list()
     k <- 1
-    whi <- chain.idx(f) == chain.subset
+    whi <- chain.idx(fit_obj) == chain.subset
     for(s in es){
       ess[[k]] <- s[whi, ]
       k <- k+1
@@ -70,7 +70,7 @@ extract_samples_from_rstan <- function(fit_obj, chain.subset = 0) {
 
     ess <- list()
     k <- 1
-    whi <- chain.idx(f) == chain.subset
+    whi <- chain.idx(fit_obj) == chain.subset
     for(s in es){
       ess[[k]] <- s[whi, ]
       k <- k+1
@@ -213,16 +213,29 @@ draws.varnames <- function(draws, ..., unique.names = TRUE){
   return(n)
 }
 
-numdraws <- function(x){
+numdraws <- function(fit_obj){
   # if x is a fitobj returned by CmdStanR
-  if("CmdStanFit" %in% class(x)){
-    nd <- posterior::ndraws(x$draws())
+  if("CmdStanFit" %in% class(fit_obj)){
+    nd <- posterior::ndraws(fit_obj$draws())
+  }else if("stanreg" %in% class(fit_obj)){
+    nd <-  nrow( as.data.frame(fit_obj))
   }
   # if of S3 class mcmc.draws
-  else if("mcmc.draws" %in% class(x)){
+  else if("mcmc.draws" %in% class(fit_obj)){
     nd <- dim(draws[[1]])[1]
   }
   nd
+}
+
+numchains <- function(fit_obj){
+  # if x is a fitobj returned by CmdStanR
+  if("CmdStanFit" %in% class(fit_obj)){
+    nchains <- posterior::nchains(fit_obj$draws())
+  }else if("stanreg" %in% class(fit_obj)){
+    dd <-posterior::as_draws_df( f_rsa$stanfit )
+    nchains <-  length( unique( dd$.chain ))
+  }
+  nchains
 }
 
 
@@ -235,8 +248,9 @@ numdraws <- function(x){
 #' @return An integer vector indicating the chain each draw belongs to.
 #' @export
 chain.idx <- function(fit_obj){
-  nd <- posterior::ndraws(fit_obj$draws())
-  nc <- fit_obj$num_chains()
+
+  nd <- numdraws( fit_obj )
+  nc <- numchains( fit_obj)
 
   dpc <- nd / nc
   rep(1:nc, each = dpc)
