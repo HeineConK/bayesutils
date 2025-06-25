@@ -1,5 +1,5 @@
 # bayesutils
-his R package offers a lightweight set of tools for working with posterior draws from Markov Chain Monte Carlo (MCMC) samplers and associated Stan code. It provides 
+This R package offers a lightweight set of tools for working with posterior draws from Markov Chain Monte Carlo (MCMC) samplers and associated Stan code. It provides 
 
 - flexible, interface-agnostic utilities for 
 - extracting, 
@@ -271,7 +271,7 @@ m2 <- cmdstan_model("peng2.stan")
 fit2 <- m2$sample(data = dat, parallel_chains = 2)
 ```
 
-How do the inferences compare to the first model? A quick visulization to put them side by side:
+How do the inferences compare to the first model? A quick visualization to put them side by side:
 
 ```
 mcmc.forestplot( list(fit, fit2), xlim = c(-0.25, 1.5) )
@@ -307,10 +307,14 @@ mcmc.forestplot( list(fit, fit2), vars = c("a", "sigma") )
   <img src="./demo/forestplot.compare.sel.svg" alt="Centered Image" width="600"/>
 </div>
 
-Currently, the 50%, 90% and 99% credible intervals are shown. This can be quickly modified if needed:
+Currently, the 50%, 90% and 99% credible intervals are shown. This can be quickly modified if needed -- here we tell the plotting function to use 50% and 80% credible intervals instead:
 
 ```
-piplotter <- PI.boxed.plotter( p = c(0.5, 0.8), col = c(bu.color(2, alpha = 1), bu.color(2, alpha = 0.5)))
+piplotter <- PI.boxed.plotter( p = c(0.5, 0.8),
+                               col = c(bu.color(2, alpha = 1),
+                                       bu.color(2, alpha = 0.5)
+                                       )
+)
 
 mcmc.forestplot( list(fit, fit2), vars = c("a", "sigma"), pi.plotter = piplotter)
 
