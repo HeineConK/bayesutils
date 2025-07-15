@@ -7,7 +7,7 @@
 PI.boxed.plotter(
   p = c(0.99, 0.9, 0.5),
   col = c(acol(4, 0.1), acol(4, 0.6), acol(4, 1)),
-  height = c(0.1),
+  height = c(0.08),
   border = NA
 )
 }
