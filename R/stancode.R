@@ -83,6 +83,7 @@ sc.from.stan.file <- function(stan.filename){
   C <- stancode()
 
   lns <- readLines( stan.filename )
+
   k <- NULL
   for(ln in lns){
     if(startsWith(ln, "functions{")){
@@ -118,7 +119,8 @@ sc.from.stan.file <- function(stan.filename){
     else if(startsWith(ln, "// descr: ")){
       C$model.description <- stringr::str_split(ln, "// descr: ")[[1]][2]
     }
-    else if(!startsWith(ln, "}")){
+    else if(!startsWith(ln, "}") && !startsWith(ln, "//")){
+
       C[[k]] <- append(C[[k]], ln)
     }
   }

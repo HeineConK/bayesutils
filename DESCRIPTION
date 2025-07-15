@@ -1,7 +1,7 @@
 Package: bayesutils
 Type: Package
 Title: Utility functions and custom visualizations not or only provided to some limited extend by common packages 
-Version: 0.3.1
+Version: 0.3.2
 Author: Florian Heinke
 Maintainer: Florian Heinke <heinke@hs-mittweida.de>
 Description: Package for composing Stan code and modify/extract/transform posterior draws obtained from common packages (rstanarm, rethinking, CmdStanR).
