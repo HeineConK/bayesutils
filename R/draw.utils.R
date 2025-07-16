@@ -315,7 +315,7 @@ chain.idx <- function(fit_obj){
   }
   #TODO gather densities or consider ditching this idea
 
-  k <- 1
+
   for(v in names(draws)){
 
     dv <- dim(draws[[v]])
@@ -323,7 +323,7 @@ chain.idx <- function(fit_obj){
     if(is.null(dv)){
       if(v %in% varsp){
         s <- draws[[v]]
-
+        k <- which(v == varsp)
         if(gather_mat){
           X[,k] <- s
         }
@@ -343,7 +343,6 @@ chain.idx <- function(fit_obj){
             dfs[k, np[2] ] <- pii[2]
           }
         }
-        k <- k + 1
       }
     }
 
@@ -352,16 +351,16 @@ chain.idx <- function(fit_obj){
         if(v %in% varsp){
 
           s <- draws[[v]]
-
+          k <- which(v == varsp)
           if(gather_mat){
             X[,k] <- s
           }
 
           if(gather_sum){
-            rk <- which( v == varsp )
-            dfs[rk,]$mean <- mean( s )
-            dfs[rk,]$sd   <- sdN( s )
-            dfs[rk,]$median   <- median( s )
+
+            dfs[k,]$mean <- mean( s )
+            dfs[k,]$sd   <- sdN( s )
+            dfs[k,]$median   <- median( s )
 
             for(p in PI.lvls){
               np <- c( paste0("PI", 100 * p, ".lwr"),
@@ -369,13 +368,11 @@ chain.idx <- function(fit_obj){
               )
 
               pii <- PI(s, p)
-              dfs[rk, np[1] ] <- pii[1]
-              dfs[rk, np[2] ] <- pii[2]
+              dfs[k, np[1] ] <- pii[1]
+              dfs[k, np[2] ] <- pii[2]
             }
           }
 
-
-          k <- k + 1
         }
 
       }
@@ -384,16 +381,15 @@ chain.idx <- function(fit_obj){
           n <-  paste0(v, "[", i ,"]")
           if(n %in% varsp){
             s <- draws[[v]][,i]
-
+            k <- which(n == varsp)
             if(gather_mat){
               X[,k] <- s
             }
 
             if(gather_sum){
-              rk <- which( n == varsp )
-              dfs[rk,]$mean <- mean( s )
-              dfs[rk,]$sd   <- sdN( s )
-              dfs[rk,]$median   <- median( s )
+              dfs[k,]$mean <- mean( s )
+              dfs[k,]$sd   <- sdN( s )
+              dfs[k,]$median   <- median( s )
 
               for(p in PI.lvls){
                 np <- c( paste0("PI", 100 * p, ".lwr"),
@@ -402,13 +398,12 @@ chain.idx <- function(fit_obj){
 
 
                 pii <- PI(s, p)
-                dfs[rk, np[1] ] <- pii[1]
-                dfs[rk, np[2] ] <- pii[2]
+                dfs[k, np[1] ] <- pii[1]
+                dfs[k, np[2] ] <- pii[2]
               }
 
             }
 
-            k <- k + 1
           }
         }
       }
@@ -420,16 +415,16 @@ chain.idx <- function(fit_obj){
           n <- paste0(v, "[", i, ",", j ,"]")
           if(n %in% varsp){
             s <- draws[[v]][,i,j]
+            k <- which(n == varsp)
 
             if(gather_mat){
               X[,k] <- s
             }
 
             if(gather_sum){
-              rk <- which( n == varsp )
-              dfs[rk,]$mean <- mean( s )
-              dfs[rk,]$sd   <- sdN( s )
-              dfs[rk,]$median   <- median( s )
+              dfs[k,]$mean <- mean( s )
+              dfs[k,]$sd   <- sdN( s )
+              dfs[k,]$median   <- median( s )
 
               for(p in PI.lvls){
                 np <- c( paste0("PI", 100 * p, ".lwr"),
@@ -437,12 +432,11 @@ chain.idx <- function(fit_obj){
                 )
 
                 pii <- PI(s, p)
-                dfs[rk, np[1] ] <- pii[1]
-                dfs[rk, np[2] ] <- pii[2]
+                dfs[k, np[1] ] <- pii[1]
+                dfs[k, np[2] ] <- pii[2]
               }
             }
 
-            k <- k + 1
           }
         }
       }
