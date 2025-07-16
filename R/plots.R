@@ -208,7 +208,7 @@ mcmc.forestplot <- function(x,
 
   if(is.null(summaries))
     if(!is.null(fit_obj_list)){
-      summaries <- lapply(fit_obj_list, function(fit_obj) mcmc.summary(fit_obj = fit_obj, draws = draws, vars = vars, ignore.lp = ignore.lp, PI.lvls = pi.plotter$p))
+      summaries <- lapply(fit_obj_list, function(fit_obj) mcmc.summary(fit_obj = fit_obj, draws = draws, vars = vars, ignore.lp = ignore.lp, PI.lvls = pi.plotter$p, digits = 12))
       if(length(fit_obj_list) > 1){
         if(is.null(names( fit_obj_list))) mdl_names <- paste0("M", 1:length(fit_obj_list))
         else mdl_names <- names(fit_obj_list)
@@ -216,7 +216,7 @@ mcmc.forestplot <- function(x,
     }
 
   if(!is.null(draws_list)){
-    summaries <- lapply(draws_list, function(draws) mcmc.summary(fit_obj = fit_obj, draws = draws, vars = vars, ignore.lp = ignore.lp, PI.lvls = pi.plotter$p))
+    summaries <- lapply(draws_list, function(draws) mcmc.summary(fit_obj = fit_obj, draws = draws, vars = vars, ignore.lp = ignore.lp, PI.lvls = pi.plotter$p, digits = 12))
     if(length(draws_list) > 1){
       if(is.null(names( draws_list))) mdl_names <- paste0("M", 1:length(draws_list))
       else mdl_names <- names(draws_list)
@@ -224,7 +224,7 @@ mcmc.forestplot <- function(x,
   }
 
   if(!is.null(stanreg_list)){
-    summaries <- lapply(stanreg_list, function(stanregobj) mcmc.summary(fit_obj = fit_obj, draws = draws, vars = vars, ignore.lp = ignore.lp, PI.lvls = pi.plotter$p))
+    summaries <- lapply(stanreg_list, function(stanregobj) mcmc.summary(fit_obj = fit_obj, draws = draws, vars = vars, ignore.lp = ignore.lp, PI.lvls = pi.plotter$p, digits = 12))
     if(length(stanreg_list) > 1){
       if(is.null(names( stanreg_list))) mdl_names <- paste0("M", 1:length(stanreg_list))
       else mdl_names <- names(stanreg_list)
