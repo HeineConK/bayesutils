@@ -339,6 +339,164 @@ polyg.intv(x = draws$a, prob = 0.95, col = acol( bu.color(2) ))
   <img src="./demo/dens.plot.svg" alt="Centered Image" width="600"/>
 </div>
 
+## Checking Prior and Posterior Draw Densities for Consistency
+
+The `bayesutils` package further allows to quickly contrast marginal posterior and prior draw distributions. This can be helpful for checking for semi- or non-identifiability of a given model. Semi-identifiabilty means that for some subset of parameters, conditioning the model on the data does not imply a change from the prior assumptions; thus $\Pr(\Theta | X) = \Pr(\Theta)$, where $\Theta$ denotes the parameter subset. The remainder set is however updated consistently with the Bayesian framework -- yet the update is conditional on the prior assumptions for $\Theta$. Sometimes such modelling scenarios with semi-identifiability are wanted and the only means for successfull inference. However, semi-identifiability can be an unwanted pathological model defect, being undetected and ruining inference when not checked for. Such a posterior-prior check could be to inspect empirical descriptive statistics of obtained draws, or to visually compare marginal prior and posterior draw distributions. This package provide visualizations and textual outputs to quickly contrast empirical draw distributions *a priori versus a posteriori*.
+
+To illustrate, we continue with the above example. We here construct a regression model, again with log-mass being the outcome variable. Sex and bill length are predictors.
+
+We model the log-mass likelihood by again assuming normal residual errors. The expected values are constructed through fixed-effects and varying intercepts dependent on sex. The likelihood reads as
+
+$$
+m_i \sim \text{N}(\alpha l_i + (\beta_0 + \beta_{[s_i]}), \sigma)
+$$
+
+where $l_i$ is the i-th bill length and $s_i$ is an indicator for the sex of the i-th penguin. $\beta_0$ is a latent "baseline intercept". This model is non-sensical. Without connecting $\beta_0$ to the data (f.e. by centering $\beta_0$ and $\beta$), this parameter is not identifiable. We shall explore, how we can detect the issue using `bayesutils` built-in check.
+
+Let's built the model code first:
+
+```
+cpar <- "
+  vector[2] b;
+  real b0;
+  real a;
+  real<lower = 0> sigma;
+"
+```
+
+And we implement the Stan model block accordingly. To drive the point of this example home, we only put informative priors on $\beta_0$, $\alpha$ and $\sigma$. For $\beta$ we use an "infinite" flat, non-informative prior by not stating any assumptions for $\beta$ in the model block:
+
+```
+cmdl <- "
+  b0 ~ normal(0, 1);
+  a ~ normal(0, 1);
+  for(i in 1:N) m[i] ~ normal( (b[ sex[i] ] + b0) + a * l[i]  , sigma);
+"
+```
+
+Since we want to contrast posterior draws with prior draws, we need a second model for a prior predictive simulation. We implement it by simply removing the likelihood from the model block:
+
+```
+cmdl_priorpred <- "
+  b0 ~ normal(0, 1);
+  a ~ normal(0, 1);
+"
+```
+
+We next compose, write and compile the Stan files. The data block code is borrowed from the examples above.
+
+```
+code_priorpred <- stancode( cdat, cpar, cmdl_priorpred )
+code <- stancode( cdat, cpar, cmdl )
+
+sc.to.stan.file(filename = "m_not-identifiable_priorpred.stan", code = code_priorpred)
+  sc.to.stan.file(filename = "m_not-identifiable.stan", code = code)
+
+m_pp <- cmdstan_model("m_not-identifiable_priorpred.stan")
+m <- cmdstan_model("m_not-identifiable.stan")
+
+```
+
+Fitting the models and extracting draws next:
+
+```
+priorpred <- m_pp$sample(data = dat, parallel_chains = 4)
+fit <- m$sample(data = dat, parallel_chains = 4)
+
+draws_prior <- extract_samples( priorpred )
+draws_post  <- extract_samples( fit )
+```
+
+When running the fitting process, the HMC sampler will greet you with unpleasant divergent transition warnings. The pathological issues did not remain undetected by the sampler here. In actual practical work, we should be worried by now.
+
+When we contrast the prior and posterior draw densities visually, we can quickly see that conditioning on the data did not change the draw distribution of $\beta_0$ by much:
+
+```
+plot.dens(  draws_prior$b0, col = bu.color(1), lty = 2, xlim = c(-2.5, 2.5))
+lines.dens( draws_post$b0, col = bu.color(2))
+``` 
+
+<div align="center">
+  <img src="./demo/plt_ni_densplots.svg" alt="Centered Image" width="600"/>
+</div>
+
+The marginal prior distribution is illustrated by the blue dashed line, the red line indicates the posterior density. Both distributions are essentially identical. As such inferences for the remaining four parameters is conditional on $\beta_0 \sim N(0, 1)$. These semi-identified inferences are as follows:
+
+
+```
+mcmc.summary(fit)
+
+         mean    sd  median PI50.lwr PI50.upr PI90.lwr PI90.upr
+lp__  472.139 1.547 472.436  471.351  473.291  469.173  474.013
+b[1]    0.588 0.964   0.578   -0.063    1.235   -0.992    2.206
+b[2]    0.686 0.965   0.676    0.029    1.339   -0.896    2.299
+b0      0.023 0.960   0.038   -0.603    0.677   -1.585    1.594
+a       0.172 0.016   0.173    0.162    0.183    0.146    0.198
+sigma   0.146 0.006   0.146    0.142    0.150    0.137    0.156
+```
+
+To diagnose identifiability issues quickly, we can use the `post.prior.check` function.
+
+```
+ppcheck <- post.prior.check( draws_prior, draws_post )
+```
+
+This function computes a simple prior-posterior contrast statistic for each parameter, which we will print next:
+
+```
+print( ppcheck )
+
+Summary statistics for normalized quantile residuals: 
+
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+ 0.0017  0.3158  0.5439  0.5646  0.9298  1.0000 
+
+
+Variables with smallest normalized quantile residuals: 
+
+         b0           a        b[1]        b[2]        lp__ 
+0.001699474 0.298245614 0.368421053 0.719298246 1.000000000 
+      sigma 
+1.000000000 
+``` 
+
+The resulting statistics can be rougly interpretted as "distribution dissimilarities". The smaller the statistic, the more similar are the marginal prior and posterior draw distributions. Since the outputs are ordered, we see that $\beta_0$ has by far the largest agreement between posterior and prior. More formally, let $q_p$ be the empirical quantile of the prior distribution for a given parameter to some level $p \in (0, 1)$. Let $D$ be the set of $N$ parameter posterior draws $D = {d_1, \ldots,, d_N}$. Then $f_p$ is the ratio of the number of draws less-equal to $q_p$ and $N$,
+
+$$f_p = \frac{1}{N} \sum_{i=1}^N \mathbf{1}_{\{t_i \leq q_p\}}$$,
+
+which corresponds to the empirical cumulative distribution function (ECDF).
+
+When the posterior and prior distributions are practically identical, we have $q_p = f_p$ for any level $p$. In the package, the 10%, 20%, ..., 90% quantiles are chosen as levels. The constrast statistic is the normalized squared sum of posterior and prior ECDF residuals $|f_p - q_p|^2$. Thus, if the distributions are practically identical, this sum is close to zero. Another interpretation of this statistic is to think of it as a discrepancy between a hypothetical line in a quantile-quantile plot under the assumption of both distributions being identical and the actually obtained line.
+
+The latter notion supports the interpretation of the posterior-prior check visualization:
+
+
+```
+plot( ppcheck,annotate = T )
+```  
+
+<div align="center">
+  <img src="./demo/plt_ni_ppchech_2.svg" alt="Centered Image" width="600"/>
+</div>
+
+This is the aforementioned quantile-quantile plot. Each line in the diagram, from left to right, corresponds to a parameter and the contrast between its posterior and prior distribution. Opaqueness is coded through the contrast statistic. We can quickly see, that $\sigma$ is well-identified (conditionally to $\beta_0$ though). The "jumps" from 0 to 1 in case of $\alpha$ and $\beta$ are due to the flat prior collapsing into conditionally-identified regions in the posterior. As expected, $\beta_0$ is creeping along the quantile diagonal. It is thus this single plot that can aid to detect such identifiability issues in actual works. Any parameters plotted along or somewhat close to the diagonal should raise concerns and should be checked more thoroughly (i.e. by prior calibration checks).
+
+Unchecking the annotate flag (which is `FALSE`per default)  still communicates the issue, however in a more clean way where, however, the parameter legend is hidden:
+
+```
+plot( ppcheck )
+```  
+
+<div align="center">
+  <img src="./demo/plt_ni_ppchech_1.svg" alt="Centered Image" width="600"/>
+</div>
+
+Note that the number of parameters reported in the print and plot output is limitted to the 10 smallest parameters w.r.t. the contast statistic, in order to keep the outputs clean. All parameter statistics can be accessed through the object returned by the `post.prior.check` function if needed. If only a subset of parameters shall be evaluated, then a character vector can be supplied.
+
+
+
+
+
 
 
 ## Roadmap
