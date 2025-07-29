@@ -463,11 +463,7 @@ Variables with smallest normalized quantile residuals:
 The resulting statistics can be rougly interpretted as "distribution dissimilarities". The smaller the statistic, the more similar are the marginal prior and posterior draw distributions. Since the outputs are ordered, we see that $\beta_0$ has by far the largest agreement between posterior and prior. More formally, let $q_p$ be the empirical quantile of the prior distribution for a given parameter to some level $p \in (0, 1)$. Let $D$ be the set of $N$ parameter posterior draws $D = {d_1, \ldots,, d_N}$. Then $f_p$ is the ratio of the number of draws less-equal to $q_p$ and $n$,
 
 $$
-f_p = \frac{1}{N} \sum_{i=1}^N 
-\begin{cases}
-1 & \text{if } t_i \leq q_p \\
-0 & \text{otherwise}
-\end{cases}
+f_p = \frac{1}{N} \sum_{i=1}^N \mathbf{1}_{\{t_i \leq q_p\}}
 $$,
 
 corresponding to the empirical cumulative distribution function (ECDF).
@@ -485,7 +481,7 @@ plot( ppcheck,annotate = T )
   <img src="./demo/plt_ni_ppchech_2.svg" alt="Centered Image" width="600"/>
 </div>
 
-This is the aforementioned quantile-quantile plot. Each line in the diagram, from left to right, corresponds to a parameter and the contrast between its posterior and prior distribution. Opaqueness is coded through the contrast statistic. We can quickly see, that $\sigma$ is well-identified (conditionally to $\beta_0$ though). The "jumps" from 0 to 1 in case of $\alpha$ and $\beta$ are due to the flat prior collapsing into conditionally-identified regions in the posterior. As expected, $\beta_0$ is creeping along the quantile diagonal. It is thus this single plot that can aid to detect such identifiability issues.
+This is the aforementioned quantile-quantile plot. Each line in the diagram, from left to right, corresponds to a parameter and the contrast between its posterior and prior distribution. Opaqueness is coded through the contrast statistic. We can quickly see, that $\sigma$ is well-identified (conditionally to $\beta_0$ though). The "jumps" from 0 to 1 in case of $\alpha$ and $\beta$ are due to the flat prior collapsing into conditionally-identified regions in the posterior. As expected, $\beta_0$ is creeping along the quantile diagonal. It is thus this single plot that can aid to detect such identifiability issues in actual works. Any parameters plotted along or somewhat close to the diagonal should raise concerns and should be checked more thoroughly (i.e. by prior calibration checks).
 
 Unchecking the annotate flag (which is `FALSE`per default)  still communicates the issue, however in a more clean way where, however, the parameter legend is hidden:
 
@@ -497,7 +493,7 @@ plot( ppcheck )
   <img src="./demo/plt_ni_ppchech_1.svg" alt="Centered Image" width="600"/>
 </div>
 
-Note that the number of parameters reported in the print and plot output is limitted to the 10 smallest parameters w.r.t. the contast statistic, in order to keep the outputs clean. All parameter statistics can be accessed through the object returned by the `post.prior.check` function. If only a subset of parameters shall be evaluated, then a character vector can be supplied.
+Note that the number of parameters reported in the print and plot output is limitted to the 10 smallest parameters w.r.t. the contast statistic, in order to keep the outputs clean. All parameter statistics can be accessed through the object returned by the `post.prior.check` function if needed. If only a subset of parameters shall be evaluated, then a character vector can be supplied.
 
 
 
