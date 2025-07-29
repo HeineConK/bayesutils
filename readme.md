@@ -460,13 +460,11 @@ Variables with smallest normalized quantile residuals:
 1.000000000 
 ``` 
 
-The resulting statistics can be rougly interpretted as "distribution dissimilarities". The smaller the statistic, the more similar are the marginal prior and posterior draw distributions. Since the outputs are ordered, we see that $\beta_0$ has by far the largest agreement between posterior and prior. More formally, let $q_p$ be the empirical quantile of the prior distribution for a given parameter to some level $p \in (0, 1)$. Let $D$ be the set of $N$ parameter posterior draws $D = {d_1, \ldots,, d_N}$. Then $f_p$ is the ratio of the number of draws less-equal to $q_p$ and $n$,
+The resulting statistics can be rougly interpretted as "distribution dissimilarities". The smaller the statistic, the more similar are the marginal prior and posterior draw distributions. Since the outputs are ordered, we see that $\beta_0$ has by far the largest agreement between posterior and prior. More formally, let $q_p$ be the empirical quantile of the prior distribution for a given parameter to some level $p \in (0, 1)$. Let $D$ be the set of $N$ parameter posterior draws $D = {d_1, \ldots,, d_N}$. Then $f_p$ is the ratio of the number of draws less-equal to $q_p$ and $N$,
 
-$$
-f_p = \frac{1}{N} \sum_{i=1}^N \mathbf{1}_{\{t_i \leq q_p\}}
-$$,
+$$f_p = \frac{1}{N} \sum_{i=1}^N \mathbf{1}_{\{t_i \leq q_p\}}$$,
 
-corresponding to the empirical cumulative distribution function (ECDF).
+which corresponds to the empirical cumulative distribution function (ECDF).
 
 When the posterior and prior distributions are practically identical, we have $q_p = f_p$ for any level $p$. In the package, the 10%, 20%, ..., 90% quantiles are chosen as levels. The constrast statistic is the normalized squared sum of posterior and prior ECDF residuals $|f_p - q_p|^2$. Thus, if the distributions are practically identical, this sum is close to zero. Another interpretation of this statistic is to think of it as a discrepancy between a hypothetical line in a quantile-quantile plot under the assumption of both distributions being identical and the actually obtained line.
 
