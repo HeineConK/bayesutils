@@ -460,7 +460,7 @@ Variables with smallest normalized quantile residuals:
 1.000000000 
 ``` 
 
-The resulting statistics can be rougly interpretted as "distribution" dissimilarities. The smaller the statistic, the more similar are the marginal prior and posterior draw distributions. Since the outputs are ordered, we see that $\beta_0$ has by far the largest agreement between posterior and prior. More formally, let $q_p$ be the empirical quantile of the prior distribution for a given parameter to some level $p \in (0, 1)$. Let $D$ be the set of $N$ parameter posterior draws $D = \{d_1, \ldots,, d_N\}$. Then $f_p$ is the ratio of the number of draws less-equal to $q_p$ and $n$,
+The resulting statistics can be rougly interpretted as "distribution dissimilarities". The smaller the statistic, the more similar are the marginal prior and posterior draw distributions. Since the outputs are ordered, we see that $\beta_0$ has by far the largest agreement between posterior and prior. More formally, let $q_p$ be the empirical quantile of the prior distribution for a given parameter to some level $p \in (0, 1)$. Let $D$ be the set of $N$ parameter posterior draws $D = {d_1, \ldots,, d_N}$. Then $f_p$ is the ratio of the number of draws less-equal to $q_p$ and $n$,
 
 $$
 f_p = \frac{ \sum_{i=1}^N\left\{\begin{matrix}
