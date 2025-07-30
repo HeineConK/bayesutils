@@ -125,3 +125,20 @@ covN <- function(X){
 center <- function(X){
   return( sweep(X, 2, colMeans(X)) )
 }
+
+#'
+#'
+#'
+#'
+#' @export round.format
+#'
+round.format <- function(x,
+                         digits = 2,
+                         threshold = 0.01) {
+  ifelse(
+    abs(x) < threshold & x != 0,
+    formatC(x, format = "e", digits = digits),
+    formatC(x, format = "f", digits = digits)
+  )
+}
+

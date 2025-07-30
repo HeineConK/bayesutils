@@ -156,3 +156,18 @@ lines.dens(draws$a, col = bu.color(2))
 polyg.intv(x = draws2$a, prob = 0.95, col = acol( bu.color(1) ))
 polyg.intv(x = draws$a, prob = 0.95, col = acol( bu.color(2) ))
 dev.off()
+
+pdens <- ggplot.densities(
+  xs = list( "alpha (model 1)" = draws$a,
+             "alpha (model 2)" = draws2$a
+  ),
+  col_densline = c(bu.color(1), bu.color(2)),
+  pi_lvls = c(0.5, 0.95)
+)
+
+print( pdens )
+
+svglite::svglite(filename = "ggdens.plot.svg", width=7, height=5)
+print( pdens )
+dev.off()
+
