@@ -161,7 +161,7 @@ pdens <- ggplot.densities(
   xs = list( "alpha (model 1)" = draws$a,
              "alpha (model 2)" = draws2$a
   ),
-  col_densline = c(bu.color(1), bu.color(2)),
+  col_densline = c(bu.color(2), bu.color(1)),
   pi_lvls = c(0.5, 0.90)
 )
 
