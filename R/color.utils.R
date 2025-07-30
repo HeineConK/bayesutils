@@ -35,6 +35,9 @@ bu.color <- function(i = 1, alpha = 1){
   c4 <- rgb( 171/ 256, 190/ 256, 105/ 256) # light green
   c5 <- "#0e2635"
   c6 <- "#ae8b2d"
+  c7 <- "#406580"
+  c8 <- "#931d62"
+  c9 <- "#8db259"
 
   cv <- c(
     c1,
@@ -42,10 +45,13 @@ bu.color <- function(i = 1, alpha = 1){
     c3,
     c4,
     c5,
-    c6 # orange
+    c6,
+    c7,
+    c8,
+    c9
   )
 
-  if(i > 6){
+  if(i > 9){
     warning("Max. number of colors is 6. Returning default (1).")
     return(c1)
   }
