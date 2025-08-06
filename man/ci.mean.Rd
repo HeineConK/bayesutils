@@ -2,13 +2,17 @@
 % Please edit documentation in R/stat.utils.R
 \name{ci.mean}
 \alias{ci.mean}
-\title{Title}
+\title{Compute Confidence Interval of the Arith. Mean}
 \usage{
 ci.mean(x, alpha = 0.05, na.rm = F)
 }
 \arguments{
-\item{na.rm}{}
+\item{x}{Sample data}
+
+\item{alpha}{Level for which the (1 - alpha) quantiles are computed.}
+
+\item{na.rm}{Ignore missing data}
 }
 \description{
-Title
+Compute Confidence Interval of the Arith. Mean
 }

@@ -3,6 +3,15 @@
   x
 }
 
+
+#' Produce a Simple RGB Complement Color given an Input Color
+#'
+#' Generate an RGB complement by transposing channel values.
+#'
+#' @param x A color, can be a color name or hex code.
+#' @param rot A numeric value. Can be either 1 or 2. Then the channels are rotated by that number.
+#' @return A character vector of complement color `x`.
+#' @export
 ccol <- function(x, rot = 1){
   x <- col2rgb(x) / 255
   if(rot == 1) ri <- c(2,3,1)
@@ -13,6 +22,15 @@ ccol <- function(x, rot = 1){
   x
 }
 
+#' Apply Alpha Channel to Colors
+#'
+#' Adds an alpha transparency to one or more colors.
+#' @param x A color or a vector of colors. Can be color names or hex codes.
+#' @param alpha A numeric value (between 0 and 1) or a vector of values representing the
+#'   transparency level(s) to apply. Must be the same length as `x` if vectorized.
+#'
+#' @return A character vector of colors with alpha applied, in the same length as `x`.
+#' @export
 acol <- function (x, alpha = 0.2){
   if (length(x) == 1) {
     ..ca(x, alpha)
@@ -23,10 +41,20 @@ acol <- function (x, alpha = 0.2){
   }
 }
 
+#' Quick Helper function to generate an opaque Black Color Value.
+#'
+#' @param alpha Alpha value (between 0 and 1) applied to black.
+#' @export
 ablack <- function (alpha = 0.2){
   ..ca("black", alpha)
 }
 
+
+#' Retun bayesutil's Default Colors
+#'
+#' @param i Color integer index, between 1 - 9.
+#' @param alpha Alpha color value to apply if needed. Defaults to 1.
+#' @export
 bu.color <- function(i = 1, alpha = 1){
 
   c1 <- rgb( 86/ 256, 116/ 256, 233/ 256) # light blue

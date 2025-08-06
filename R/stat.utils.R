@@ -1,4 +1,4 @@
-#'
+#' Apply Min-Max Normalization to Sample Data
 #'
 #' @export minmax.norm
 #'
@@ -8,10 +8,10 @@ minmax.norm <- function(x){
 
 }
 
-#' Title
+#' Compute Standard Error of the Arith. Mean
 #'
-#' @param x
-#' @param na.rm
+#' @param x Sample data
+#' @param na.rm Ignore missing data
 #'
 #' @return
 #' @export se
@@ -31,11 +31,11 @@ se <- function(x, na.rm = FALSE){
   return(sd(x) / sqrt(N))
 }
 
-#' Title
+#' Compute Confidence Interval of the Arith. Mean
 #'
-#' @param x
-#' @param alpha
-#' @param na.rm
+#' @param x Sample data
+#' @param alpha Level for which the (1 - alpha) quantiles are computed.
+#' @param na.rm Ignore missing data
 #'
 #' @return
 #' @export ci.mean
@@ -62,7 +62,7 @@ ci.mean <- function(x, alpha = .05, na.rm = F){
 }
 
 
-#' Title
+#' Compute empirical Variance (without Bessel Adjustement)
 #'
 #' @param x
 #' @param na.rm
@@ -90,7 +90,7 @@ varN <- function(x, na.rm = FALSE){
 
 }
 
-#' Title
+#' Compute empirical Standard Deviation (without Bessel Adjustement)
 #'
 #' @param x
 #' @param na.rm
@@ -103,8 +103,7 @@ sdN <- function(x, na.rm = FALSE){
 }
 
 
-#'
-#'
+#' Compute empirical Covariances (without Bessel Adjustments)
 #'
 #'
 #' @export covN
@@ -116,7 +115,7 @@ covN <- function(X){
   return(C2)
 }
 
-#'
+#' Compute centered Data
 #'
 #'
 #'
@@ -126,8 +125,7 @@ center <- function(X){
   return( sweep(X, 2, colMeans(X)) )
 }
 
-#'
-#'
+#' Formatter for genrating scientific Numeric Notations for Roundings with Zero-underflow
 #'
 #'
 #' @export round.format

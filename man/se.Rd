@@ -2,13 +2,15 @@
 % Please edit documentation in R/stat.utils.R
 \name{se}
 \alias{se}
-\title{Title}
+\title{Compute Standard Error of the Arith. Mean}
 \usage{
 se(x, na.rm = FALSE)
 }
 \arguments{
-\item{na.rm}{}
+\item{x}{Sample data}
+
+\item{na.rm}{Ignore missing data}
 }
 \description{
-Title
+Compute Standard Error of the Arith. Mean
 }

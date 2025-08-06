@@ -2,7 +2,7 @@
 % Please edit documentation in R/stat.utils.R
 \name{varN}
 \alias{varN}
-\title{Title}
+\title{Compute empirical Variance (without Bessel Adjustement)}
 \usage{
 varN(x, na.rm = FALSE)
 }
@@ -10,5 +10,5 @@ varN(x, na.rm = FALSE)
 \item{na.rm}{}
 }
 \description{
-Title
+Compute empirical Variance (without Bessel Adjustement)
 }

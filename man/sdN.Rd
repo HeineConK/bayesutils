@@ -2,7 +2,7 @@
 % Please edit documentation in R/stat.utils.R
 \name{sdN}
 \alias{sdN}
-\title{Title}
+\title{Compute empirical Standard Deviation (without Bessel Adjustement)}
 \usage{
 sdN(x, na.rm = FALSE)
 }
@@ -10,5 +10,5 @@ sdN(x, na.rm = FALSE)
 \item{na.rm}{}
 }
 \description{
-Title
+Compute empirical Standard Deviation (without Bessel Adjustement)
 }
