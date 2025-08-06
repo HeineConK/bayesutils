@@ -16,14 +16,14 @@ This package is not on CRAN. Instead you can install it directly from GitHub. Ye
 
 ```
 install.packages(
-    "Cairo",
+    c("Cairo",
     "cmdstanr",
     "coda",
     "jsonlite",
     "posterior",
     "rstan",
     "stringr",
-    "ggplot2"	
+    "ggplot2")	
 )
 devtools::install_github("HeineConK/bayesutils")
 ```
