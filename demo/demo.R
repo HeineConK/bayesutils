@@ -153,6 +153,21 @@ draws2 <- extract_samples( fit2 )
 svglite::svglite(filename = "dens.plot.svg", width=5, height=5)
 plot.dens( draws2$a, col = bu.color(1), xlim = c(0, 0.25))
 lines.dens(draws$a, col = bu.color(2))
-polyg.intv(x = draws2$a, prob = 0.95, col = acol( bu.color(1) ))
-polyg.intv(x = draws$a, prob = 0.95, col = acol( bu.color(2) ))
+polyg.intv(x = draws2$a, prob = 0.90, col = acol( bu.color(1) ))
+polyg.intv(x = draws$a, prob = 0.90, col = acol( bu.color(2) ))
 dev.off()
+
+pdens <- ggplot.densities(
+  xs = list( "alpha (model 1)" = draws$a,
+             "alpha (model 2)" = draws2$a
+  ),
+  col_densline = c(bu.color(2), bu.color(1)),
+  pi_lvls = c(0.5, 0.90)
+)
+
+print( pdens )
+
+svglite::svglite(filename = "ggdens.plot.svg", width=7, height=5)
+print( pdens )
+dev.off()
+
