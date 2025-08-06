@@ -22,7 +22,9 @@ install.packages(
     "jsonlite",
     "posterior",
     "rstan",
-    "stringr")
+    "stringr",
+    "ggplot2"	
+)
 devtools::install_github("HeineConK/bayesutils")
 ```
 
